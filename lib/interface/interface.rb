@@ -11,7 +11,7 @@ module Game
       @board = ('0'..'8').to_a
     end
 
-    def self.render
+    def render
       frame = ' 0 | 1 | 2 \\n===+===+===\\n'\
       ' 3 | 4 | 5 \\n===+===+===\\n'\
       ' 6 | 7 | 8 \\n'
@@ -25,15 +25,18 @@ module Game
       puts 'Enter [0-8]:'
 
       input = $stdin.gets.chomp
-      request_input unless input_is_valid?(input)
+      unless input_is_valid?(input)
+        puts 'Please enter a valid number'
+        request_input
+      end
 
-      input
+      input.to_i
     end
 
     private
 
     def input_is_valid?(input)
-      true
+      ('0'..'8').to_a.include?(input)
     end
   end
 end
