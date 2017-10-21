@@ -15,7 +15,7 @@ RSpec.describe Game::Game, '#Game' do
 
       interface = game.instance_variable_get(:@interface)
 
-      expect(Game::Interface).to receive(:render)
+      expect(interface).to receive(:render)
       expect(interface).to receive(:request_input)
 
       game.start_game

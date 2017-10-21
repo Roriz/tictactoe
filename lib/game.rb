@@ -8,7 +8,7 @@ module Game
     end
 
     def start_game
-      Interface.render
+      @interface.render
       input = @interface.request_input
     end
   end
