@@ -34,7 +34,7 @@ RSpec.describe Game::Game, '#Game' do
       interface = game.instance_variable_get(:@interface)
       board = game.instance_variable_get(:@board)
 
-      expect(interface).to receive(:render).with(board: board)
+      expect(interface).to receive(:render)
       expect(board).to receive(:empty_space?).and_return(false)
 
       game.start_game
@@ -77,7 +77,7 @@ RSpec.describe Game::Game, '#Game' do
       expect(board).to receive(:empty_space?).and_return(true, false)
       expect(game).to receive(:player_turn).with(player: players.first, opponent: players.last).and_return(move)
       expect(board).to receive(:update).with(action: move, player: players.first)
-      expect(interface).to receive(:render).with(board: board).twice
+      expect(interface).to receive(:render).twice
 
       game.start_game
     end
