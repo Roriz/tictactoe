@@ -1,94 +1,70 @@
-require_relative 'interface/interface'
+require_relative 'game/interface'
+require_relative 'game/player'
+require_relative 'game/board'
 
 module Game
   # Game - class will maintain tictactoe and interface class
   class Game
     def initialize
       @interface = Interface.new
+      @players = [
+        Player.new(
+          type: :HUMAN,
+          position: :player_1
+        ),
+        Player.new(
+          type: :AI,
+          position: :player_2
+        )
+      ]
+      @board = Board.new
+      @turn = 0
     end
 
     def start_game
-      @interface.render
-      input = @interface.request_input
+      @interface.render(board: @board)
+      next_turn until @board.winner || !@board.empty_space?
+      end_game
+    end
+
+    private
+
+    def end_game
+      @interface.end_game
+    end
+
+    def player1
+      @players.first
+    end
+
+    def player2
+      @players.last
+    end
+
+    def player1_turn?
+      (@turn % @players.length).zero?
+    end
+
+    def next_turn
+      player = player1_turn? ? player1 : player2
+      opponent = player1_turn? ? player2 : player1
+
+      player_action(player: player, opponent: opponent)
+      @turn += 1
+    end
+
+    def player_action(player:, opponent:)
+      action = player_turn(player: player, opponent: opponent)
+      @board.update(action: action, player: player)
+      @interface.render(board: @board)
+    end
+
+    def player_turn(player:, opponent:)
+      if player.human?
+        @interface.request_input
+      else
+        player.best_move(board: @board, opponent: opponent)
+      end
     end
   end
-
-  # def get_human_spot
-  #   spot = nil
-  #   until spot
-  #     spot = $stdin.gets.chomp.to_i
-  #     if @board[spot] != "X" && @board[spot] != "O"
-  #       @board[spot] = @hum
-  #     else
-  #       spot = nil
-  #     end
-  #   end
-  # end
-
-  # def eval_board
-  #   spot = nil
-  #   until spot
-  #     if @board[4] == "4"
-  #       spot = 4
-  #       @board[spot] = @com
-  #     else
-  #       spot = get_best_move(@board, @com)
-  #       if @board[spot] != "X" && @board[spot] != "O"
-  #         @board[spot] = @com
-  #       else
-  #         spot = nil
-  #       end
-  #     end
-  #   end
-  # end
-
-  # def get_best_move(board, next_player, depth = 0, best_score = {})
-  #   available_spaces = []
-  #   best_move = nil
-  #   board.each do |s|
-  #     if s != "X" && s != "O"
-  #       available_spaces << s
-  #     end
-  #   end
-  #   available_spaces.each do |as|
-  #     board[as.to_i] = @com
-  #     if game_is_over(board)
-  #       best_move = as.to_i
-  #       board[as.to_i] = as
-  #       return best_move
-  #     else
-  #       board[as.to_i] = @hum
-  #       if game_is_over(board)
-  #         best_move = as.to_i
-  #         board[as.to_i] = as
-  #         return best_move
-  #       else
-  #         board[as.to_i] = as
-  #       end
-  #     end
-  #   end
-  #   if best_move
-  #     return best_move
-  #   else
-  #     n = rand(0..available_spaces.count)
-  #     return available_spaces[n].to_i
-  #   end
-  # end
-
-  # def game_is_over(b)
-
-  #   [b[0], b[1], b[2]].uniq.length == 1 ||
-  #   [b[3], b[4], b[5]].uniq.length == 1 ||
-  #   [b[6], b[7], b[8]].uniq.length == 1 ||
-  #   [b[0], b[3], b[6]].uniq.length == 1 ||
-  #   [b[1], b[4], b[7]].uniq.length == 1 ||
-  #   [b[2], b[5], b[8]].uniq.length == 1 ||
-  #   [b[0], b[4], b[8]].uniq.length == 1 ||
-  #   [b[2], b[4], b[6]].uniq.length == 1
-  # end
-
-  # def tie(b)
-  #   b.all? { |s| s == "X" || s == "O" }
-  # end
-
 end
