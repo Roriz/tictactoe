@@ -1,12 +1,12 @@
 require_relative 'game/interface'
 require_relative 'game/player'
 require_relative 'game/board'
+require 'pry'
 
 module Game
   # Game - class will maintain tictactoe and interface class
   class Game
     def initialize
-      @interface = Interface.new
       @players = [
         Player.new(
           type: :HUMAN,
@@ -18,11 +18,12 @@ module Game
         )
       ]
       @board = Board.new
+      @interface = Interface.new(board: @board)
       @turn = 0
     end
 
     def start_game
-      @interface.render(board: @board)
+      @interface.render
       next_turn until @board.winner || !@board.empty_space?
       end_game
     end
@@ -56,7 +57,7 @@ module Game
     def player_action(player:, opponent:)
       action = player_turn(player: player, opponent: opponent)
       @board.update(action: action, player: player)
-      @interface.render(board: @board)
+      @interface.render
     end
 
     def player_turn(player:, opponent:)

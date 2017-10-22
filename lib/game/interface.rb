@@ -9,19 +9,20 @@ module Game
 
     ROW_SIZE = 3
 
-    def render(board:)
+    def initialize(board:)
+      @board = board
+    end
+
+    def render
       system 'clear'
-      puts board_render(board: board)
+      puts board_render
     end
 
     def request_input
       puts 'Enter [0-8]:'
 
       input = $stdin.gets.chomp
-      unless input_is_valid?(input)
-        puts 'Please enter a valid number'
-        input = request_input
-      end
+      input = request_input unless valid_input?(input)
 
       input.to_i
     end
@@ -32,19 +33,38 @@ module Game
 
     private
 
+    def valid_input?(input)
+      not_a_number_valid = input_is_valid?(input)
+      number_already_used = input_is_uniq?(input.to_i)
+
+      puts 'Please enter a valid number' unless not_a_number_valid
+      puts 'Please enter a number not yet used' if number_already_used
+
+      not_a_number_valid && !number_already_used
+    end
+
     def input_is_valid?(input)
       ('0'..'8').to_a.include?(input)
     end
 
-    def board_render(board:)
-      board_markers(board: board)
+    def input_is_uniq?(input)
+      board_state = @board
+                    .current_state
+                    .map
+                    .with_index { |state, index| state ? index : nil }
+                    .compact
+      board_state.include?(input)
+    end
+
+    def board_render
+      board_markers
         .each_slice(ROW_SIZE)
         .map { |row| row.join(' | ') }
         .join("\n===+===+===\n")
     end
 
-    def board_markers(board:)
-      board.current_state.map.with_index do |player, index|
+    def board_markers
+      @board.current_state.map.with_index do |player, index|
         player ? MARKERS[player.position] : index
       end
     end
