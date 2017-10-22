@@ -10,11 +10,11 @@ Run `bin/rspec`
 # Objetivo
 
 - Refatorar o código legado:
-  - Metódos funcionais
-  - Remover acoplamento
-  - Aplicar linter
-  - Splitar renderização
-  - Splitar AI
+  - ~~Metódos funcionais~~
+  - ~~Remover acoplamento~~
+  - ~~Aplicar linter~~
+  - ~~Splitar renderização~~
+  - ~~Splitar AI~~
 - Novas features:
   - Adicionar tratamento de entradas válidas.
   - Permitir a seleção da modalidade de jogo: fácil, médio ou difícil (hoje está sempre no difícil).
