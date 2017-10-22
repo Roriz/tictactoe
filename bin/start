@@ -11,10 +11,10 @@
 require 'pathname'
 
 app_file ||= File.expand_path(
-  '../../lib/tictactoe',
+  '../../lib/game',
   Pathname.new(__FILE__).realpath
 )
 
 require app_file
 
-Game.new.start_game
+Game::Game.new.start_game
