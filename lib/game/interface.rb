@@ -1,3 +1,5 @@
+require_relative './menu'
+
 module Game
   # Class responsible for maintaining and manipulating
   # all interaction with the interface
@@ -18,11 +20,16 @@ module Game
       puts board_render
     end
 
-    def request_input
+    def request_settings(settings:)
+      menu = Menu.new(menu: Menu::MAIN, settings: settings)
+      menu.open
+    end
+
+    def request_move
       puts I18n.t('request_input', range: '0-8')
 
       input = $stdin.gets.chomp
-      input = request_input unless valid_input?(input)
+      input = request_move unless valid_move?(input)
 
       input.to_i
     end
@@ -33,7 +40,7 @@ module Game
 
     private
 
-    def valid_input?(input)
+    def valid_move?(input)
       number_valid = input_is_valid?(input)
       number_already_used = input_is_uniq?(input.to_i)
 
@@ -60,7 +67,7 @@ module Game
       board_markers
         .each_slice(ROW_SIZE)
         .map { |row| row.join(' | ') }
-        .join("\n===+===+===\n")
+        .join("\n===+===+===\n") + "\n"
     end
 
     def board_markers

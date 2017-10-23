@@ -11,31 +11,47 @@ RSpec.describe Game::Game, '#Game' do
     expect(board).to be_an_instance_of(Game::Board)
   end
 
-  it 'should initialize with default players' do
+  it 'should initialize with default settings' do
     game = Game::Game.new
 
-    players = game.instance_variable_get(:@players)
-    player1 = players.first
-    player2 = players.last
+    default_settings = {
+      type_player_1: :HUMAN,
+      type_player_2: :AI,
+      type_of_ai: :hard
+    }
+    settings = game.instance_variable_get(:@settings)
+    turn = game.instance_variable_get(:@turn)
 
-    expect(players.length).to eq(2)
-    expect(player1).to be_an_instance_of(Game::Player)
-    expect(player1.human?).to eq(true)
-    expect(player1.instance_variable_get(:@position)).to eq(:player_1)
-    expect(player2).to be_an_instance_of(Game::Player)
-    expect(player2.human?).to eq(false)
-    expect(player2.instance_variable_get(:@position)).to eq(:player_2)
+    expect(settings).to eq(default_settings)
+    expect(turn).to eq(0)
   end
 
   describe '#start_game' do
     it 'should render empty board' do
       game = Game::Game.new
 
-      interface = game.instance_variable_get(:@interface)
       board = game.instance_variable_get(:@board)
+      interface = game.instance_variable_get(:@interface)
 
       expect(interface).to receive(:render)
       expect(board).to receive(:empty_space?).and_return(false)
+      expect(interface).to receive(:request_settings)
+
+      game.start_game
+    end
+
+    it 'should apply settings for players' do
+      game = Game::Game.new
+
+      players = game.instance_variable_get(:@players)
+      board = game.instance_variable_get(:@board)
+      interface = game.instance_variable_get(:@interface)
+      settings = game.instance_variable_get(:@settings)
+
+      expect(board).to receive(:empty_space?).and_return(false)
+      expect(interface).to receive(:request_settings)
+      expect(players.first).to receive(:apply_settings).with(settings: settings)
+      expect(players.last).to receive(:apply_settings).with(settings: settings)
 
       game.start_game
     end
@@ -45,9 +61,11 @@ RSpec.describe Game::Game, '#Game' do
 
       players = game.instance_variable_get(:@players)
       board = game.instance_variable_get(:@board)
+      interface = game.instance_variable_get(:@interface)
 
       expect(board).to receive(:empty_space?).and_return(true, false)
       expect(game).to receive(:player_action).with(player: players.first, opponent: players.last)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -57,10 +75,12 @@ RSpec.describe Game::Game, '#Game' do
 
       players = game.instance_variable_get(:@players)
       board = game.instance_variable_get(:@board)
+      interface = game.instance_variable_get(:@interface)
       game.instance_variable_set(:@turn, 1)
 
       expect(board).to receive(:empty_space?).and_return(true, false)
       expect(game).to receive(:player_action).with(player: players.last, opponent: players.first)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -78,6 +98,7 @@ RSpec.describe Game::Game, '#Game' do
       expect(game).to receive(:player_turn).with(player: players.first, opponent: players.last).and_return(move)
       expect(board).to receive(:update).with(action: move, player: players.first)
       expect(interface).to receive(:render).twice
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -89,7 +110,8 @@ RSpec.describe Game::Game, '#Game' do
       interface = game.instance_variable_get(:@interface)
 
       expect(board).to receive(:empty_space?).and_return(true, false)
-      expect(interface).to receive(:request_input).and_return(0)
+      expect(interface).to receive(:request_move).and_return(0)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -97,20 +119,19 @@ RSpec.describe Game::Game, '#Game' do
     it 'should request best move when player is AI' do
       game = Game::Game.new
 
-      player1 = Game::Player.new(
-        type: :AI,
-        position: :player_1
-      )
-      player2 = Game::Player.new(
-        type: :AI,
-        position: :player_2
-      )
-
+      settings = {
+        type_player_1: :AI,
+        type_player_2: :AI,
+        type_of_ai: :hard
+      }
       board = game.instance_variable_get(:@board)
-      game.instance_variable_set(:@players, [player1, player2])
+      interface = game.instance_variable_get(:@interface)
+      players = game.instance_variable_get(:@players)
+      game.instance_variable_set(:@settings, settings)
 
       expect(board).to receive(:empty_space?).and_return(true, false)
-      expect(player1).to receive(:best_move).with(board: board, opponent: player2).and_return(0)
+      expect(players.first).to receive(:best_move).and_return(0)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -120,9 +141,11 @@ RSpec.describe Game::Game, '#Game' do
 
       board = game.instance_variable_get(:@board)
       players = game.instance_variable_get(:@players)
+      interface = game.instance_variable_get(:@interface)
 
       expect(game).to receive(:end_game)
       expect(board).to receive(:winner).and_return(players.first)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end
@@ -131,9 +154,11 @@ RSpec.describe Game::Game, '#Game' do
       game = Game::Game.new
 
       board = game.instance_variable_get(:@board)
+      interface = game.instance_variable_get(:@interface)
 
       expect(game).to receive(:end_game)
       expect(board).to receive(:empty_space?).and_return(false)
+      expect(interface).to receive(:request_settings)
 
       game.start_game
     end

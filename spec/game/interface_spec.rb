@@ -18,7 +18,7 @@ RSpec.describe Game::Interface, '#Game::Interface' do
 
       board_rendered = "0 | 1 | 2\n===+===+===\n"\
         "3 | 4 | 5\n===+===+===\n"\
-        '6 | 7 | 8'
+        "6 | 7 | 8\n"
 
       expect(STDOUT).to receive(:puts).with(board_rendered)
 
@@ -42,7 +42,7 @@ RSpec.describe Game::Interface, '#Game::Interface' do
 
       board_rendered = "P1 | P2 | 2\n===+===+===\n"\
         "3 | 4 | 5\n===+===+===\n"\
-        '6 | 7 | 8'
+        "6 | 7 | 8\n"
 
       expect(STDOUT).to receive(:puts).with(board_rendered)
 
@@ -50,7 +50,7 @@ RSpec.describe Game::Interface, '#Game::Interface' do
     end
   end
 
-  describe '#request_input' do
+  describe '#request_move' do
     it 'should print request message' do
       board = Game::Board.new
       interface = Game::Interface.new(board: board)
@@ -62,7 +62,7 @@ RSpec.describe Game::Interface, '#Game::Interface' do
       expect($stdin).to receive(:gets).and_return(gets_stub)
       expect(STDOUT).to receive(:puts).with('Enter [0-8]:')
 
-      interface.request_input
+      interface.request_move
     end
     it 'should validate type of the value of the input' do
       board = Game::Board.new
@@ -81,7 +81,7 @@ RSpec.describe Game::Interface, '#Game::Interface' do
         true
       }.thrice
 
-      interface.request_input
+      interface.request_move
     end
     it 'should validate oneness of the value of the input' do
       board = Game::Board.new
@@ -103,7 +103,34 @@ RSpec.describe Game::Interface, '#Game::Interface' do
         true
       }.thrice
 
-      interface.request_input
+      interface.request_move
+    end
+  end
+
+  describe '#request_settings' do
+    it 'should create new menu instance and show him' do
+      default_settings = {
+        type_player_1: :HUMAN,
+        type_player_2: :AI,
+        type_of_ai: :hard
+      }
+      new_settings = {
+        type_player_1: :AI,
+        type_player_2: :AI,
+        type_of_ai: :hard
+      }
+      board = Game::Board.new
+      interface = Game::Interface.new(board: board)
+
+      menu_stubed = double(open: new_settings)
+
+      expect(Game::Menu).to receive(:new)
+        .with(menu: Game::Menu::MAIN, settings: default_settings)
+        .and_return(menu_stubed)
+
+      settings_requested = interface.request_settings(settings: default_settings)
+
+      expect(settings_requested).to be(new_settings)
     end
   end
 end

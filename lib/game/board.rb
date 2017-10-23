@@ -39,7 +39,7 @@ module Game
     end
 
     def empty_space?
-      empty_spaces.length > 0
+      !empty_spaces.empty?
     end
 
     def winner

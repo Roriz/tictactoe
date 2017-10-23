@@ -18,9 +18,10 @@ module Game
       3, 2, 3
     ].freeze
 
-    def initialize(type:, position:)
+    def initialize(type:, position:, type_of_ai: nil)
       @type = type
       @position = position
+      @type_of_ai = type_of_ai
     end
 
     def human?
@@ -43,6 +44,11 @@ module Game
       end
 
       best_move || board.empty_spaces.sample
+    end
+
+    def apply_settings(settings:)
+      @type_of_ai = settings[:type_of_ai]
+      @type = settings["type_#{@position}".to_sym]
     end
 
     private

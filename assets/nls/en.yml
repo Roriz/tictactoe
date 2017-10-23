@@ -18,3 +18,5 @@ en:
     ia_label: 'Select difficulty:'
   errors:
     valid_option: 'Please enter a valid option'
+    valid_number: 'Please enter a valid number'
+    number_uniq: 'Please enter a number not yet used'

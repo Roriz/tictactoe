@@ -1,5 +1,9 @@
 require 'pry'
 require 'simplecov'
+require 'I18n'
+
+I18n.config.available_locales = :en
+I18n.backend.load_translations
 
 SimpleCov.start
 

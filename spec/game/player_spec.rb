@@ -1,7 +1,7 @@
 require 'game/player'
 
 RSpec.describe Game::Player, '#Game' do
-  describe '#initialize' do
+  describe '.initialize' do
     it 'should set type and position' do
       player = Game::Player.new(
         type: :AI,

@@ -2,7 +2,7 @@ require 'game/board'
 require 'game/player'
 
 RSpec.describe Game::Board, '#Game::Board' do
-  describe '#initialize' do
+  describe '.initialize' do
     it 'should set empty board' do
       board = Game::Board.new
 

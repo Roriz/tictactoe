@@ -1,25 +1,23 @@
-require_relative './config'
-
 module Game
   # Class responsible for maintaining and manipulating
   # all interaction with the menu options
   class Menu
     MAIN = {
-      label: I18n.t('menu.main_label'),
+      label: 'menu.main_label',
       options: [
-        { id: 'next', label: I18n.t('menu.start_game') },
-        { id: 'config_ia', label: I18n.t('menu.config_ia'), method: :open_ia_menu },
+        { id: 'next', label: 'menu.start_game' },
+        { id: 'config_ia', label: 'menu.config_ia', method: :open_ia_menu },
       ]
     }.freeze
 
     AI = {
-      label: I18n.t('menu.ia_label'),
+      label: 'menu.ia_label',
       options: [
-        { id: :easy, label: I18n.t('difficulty.easy'), method: :change_type_of_ai },
-        { id: :medium, label: I18n.t('difficulty.medium'), method: :change_type_of_ai },
-        { id: :hard, label: I18n.t('difficulty.hard'), method: :change_type_of_ai },
-        { id: :impossible, label: I18n.t('difficulty.impossible'), method: :change_type_of_ai },
-        { id: :troll, label: I18n.t('difficulty.troll'), method: :change_type_of_ai }
+        { id: :easy, label: 'difficulty.easy', method: :change_type_of_ai },
+        { id: :medium, label: 'difficulty.medium', method: :change_type_of_ai },
+        { id: :hard, label: 'difficulty.hard', method: :change_type_of_ai },
+        { id: :impossible, label: 'difficulty.impossible', method: :change_type_of_ai },
+        { id: :troll, label: 'difficulty.troll', method: :change_type_of_ai }
       ]
     }.freeze
 
@@ -29,27 +27,28 @@ module Game
       @previous = previous
     end
 
-    def show
+    def open
       system 'clear'
 
       settings_render
-      puts "\n"
       print_options
       option = request_option
 
       send(option[:method], option[:id]) if option.key?(:method)
+
+      option
     end
 
     private
 
     def open_ia_menu(_id)
       menu = Menu.new(menu: AI, settings: @settings, previous: self)
-      menu.show
+      menu.open
     end
 
     def change_type_of_ai(id)
       @settings[:type_of_ai] = id
-      @previous.show
+      @previous.open
     end
 
     def settings_render
@@ -57,13 +56,14 @@ module Game
       puts I18n.t("player_is_#{@settings[:type_player_1].to_s.downcase}", n: 1)
       puts I18n.t("player_is_#{@settings[:type_player_2].to_s.downcase}", n: 2)
       puts I18n.t('ai_settings', difficulty: I18n.t("difficulty.#{@settings[:type_of_ai]}"))
+      puts "\n"
     end
 
     def print_options
-      puts @menu[:label]
+      puts I18n.t(@menu[:label])
 
       @menu[:options].each.with_index do |option, index|
-        puts "#{index + 1} - #{option[:label]}"
+        puts "#{index + 1} - #{I18n.t(option[:label])}"
       end
     end
 
