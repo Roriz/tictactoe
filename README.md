@@ -17,10 +17,11 @@ Run `bin/rspec`
     - ~~Splitar AI~~
 - Novas features:
     - ~~Adicionar tratamento de entradas válidas.~~
-    - Navegação por menu
-    - Permitir a seleção da modalidade de jogo: fácil, médio ou difícil (hoje está sempre no difícil).
+    - ~~Navegação por menu~~
+    - ~~Permitir a seleção da modalidade de jogo: fácil, médio ou difícil (hoje está sempre no difícil).~~
     - Permitir a seleção do tipo de jogo: computador vs computador, player vs player ou computador vs player.
-    - Adicionar modalidade: impossível
-    - Internacionalização
+    - ~~Adicionar modalidade: impossível~~
+    - ~~Adicionar modalidade: troll~~
+    - ~~Internacionalização~~
     - Fazer docker
     - Talvez refatorar a interface para algo mais visual? Talvez com shoes? Ou talvez om vuejs?
