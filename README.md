@@ -1,8 +1,11 @@
 # Sobre o repositório
 Esse respositório tem como objetivo criar um jogo da velha em ruby com interface via terminal.
 
-# Instalação
+# Instalação (Soon)
 Run `bin/setup`
+
+# Rodar
+Run `bin/start`
 
 # Tests
 Run `bin/rspec`
@@ -23,5 +26,5 @@ Run `bin/rspec`
     - ~~Adicionar modalidade: impossível~~
     - ~~Adicionar modalidade: troll~~
     - ~~Internacionalização~~
-    - Fazer docker
-    - Talvez refatorar a interface para algo mais visual? Talvez com shoes? Ou talvez om vuejs?
+    - Fazer docker (soon)
+    - Talvez refatorar a interface para algo mais visual? Talvez com shoes? Ou talvez om vuejs? (soon)
