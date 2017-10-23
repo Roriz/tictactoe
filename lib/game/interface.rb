@@ -19,7 +19,7 @@ module Game
     end
 
     def request_input
-      puts 'Enter [0-8]:'
+      puts I18n.t('request_input', range: '0-8')
 
       input = $stdin.gets.chomp
       input = request_input unless valid_input?(input)
@@ -28,19 +28,19 @@ module Game
     end
 
     def end_game
-      puts 'Game over!'
+      puts I18n.t('game_over')
     end
 
     private
 
     def valid_input?(input)
-      not_a_number_valid = input_is_valid?(input)
+      number_valid = input_is_valid?(input)
       number_already_used = input_is_uniq?(input.to_i)
 
-      puts 'Please enter a valid number' unless not_a_number_valid
-      puts 'Please enter a number not yet used' if number_already_used
+      puts I18n.t('errors.valid_number') unless number_valid
+      puts I18n.t('errors.number_uniq') if number_already_used
 
-      not_a_number_valid && !number_already_used
+      number_valid && !number_already_used
     end
 
     def input_is_valid?(input)

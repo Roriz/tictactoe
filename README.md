@@ -20,5 +20,6 @@ Run `bin/rspec`
     - Permitir a seleção da modalidade de jogo: fácil, médio ou difícil (hoje está sempre no difícil).
     - Permitir a seleção do tipo de jogo: computador vs computador, player vs player ou computador vs player.
     - Adicionar modalidade: impossível
+    - Internacionalização
     - Fazer docker
     - Talvez refatorar a interface para algo mais visual? Talvez com shoes? Ou talvez om vuejs?

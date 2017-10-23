@@ -1,0 +1,20 @@
+en:
+  game_over: Game over!
+  request_input: 'Enter [%{range}]:'
+  current_settings: 'Current settings:'
+  player_is_human: 'Player %{n} is human'
+  player_is_ai: 'Player %{n} is computer'
+  ai_settings: 'Currently the computer is in difficulty: %{difficulty}'
+  difficulty:
+    easy: Easy
+    medium: Medium
+    hard: Hard
+    impossible: Impossible
+    troll: Troll
+  menu: 
+    main_label: What would you like to do?
+    start_game: Start game
+    config_ia: Change AI configuration
+    ia_label: 'Select difficulty:'
+  errors:
+    valid_option: 'Please enter a valid option'

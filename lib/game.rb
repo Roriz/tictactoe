@@ -1,7 +1,7 @@
 require_relative 'game/interface'
 require_relative 'game/player'
 require_relative 'game/board'
-require 'pry'
+require_relative 'game/config'
 
 module Game
   # Game - class will maintain tictactoe and interface class

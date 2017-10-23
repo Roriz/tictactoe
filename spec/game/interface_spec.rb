@@ -76,8 +76,8 @@ RSpec.describe Game::Interface, '#Game::Interface' do
       )
 
       expect($stdin).to receive(:gets).and_return(gets_invalid_stub, gets_valid_stub)
-      expect(STDOUT).to receive(:puts) { |mgs|
-        expect(['Enter [0-8]:', 'Please enter a valid number']).to include(mgs)
+      expect(I18n).to receive(:t) { |mgs|
+        expect(['request_input', 'errors.valid_number']).to include(mgs)
         true
       }.thrice
 
@@ -98,8 +98,8 @@ RSpec.describe Game::Interface, '#Game::Interface' do
       )
 
       expect($stdin).to receive(:gets).and_return(gets_invalid_stub, gets_valid_stub)
-      expect(STDOUT).to receive(:puts) { |mgs|
-        expect(['Enter [0-8]:', 'Please enter a number not yet used']).to include(mgs)
+      expect(I18n).to receive(:t) { |mgs|
+        expect(['request_input', 'errors.number_uniq']).to include(mgs)
         true
       }.thrice
 
