@@ -7,6 +7,7 @@ module Game
       options: [
         { id: 'next', label: 'menu.start_game' },
         { id: 'config_ia', label: 'menu.config_ia', method: :open_ia_menu },
+        { id: 'config_players', label: 'menu.config_players', method: :open_players_menu },
       ]
     }.freeze
 
@@ -18,6 +19,16 @@ module Game
         { id: :hard, label: 'difficulty.hard', method: :change_type_of_ai },
         { id: :impossible, label: 'difficulty.impossible', method: :change_type_of_ai },
         { id: :troll, label: 'difficulty.troll', method: :change_type_of_ai }
+      ]
+    }.freeze
+
+    PLAYERS = {
+      label: 'menu.players_label',
+      options: [
+        { id: { player_1: :HUMAN, player_2: :HUMAN }, label: 'players_vs_player', method: :change_players },
+        { id: { player_1: :HUMAN, player_2: :AI }, label: 'players_vs_ai', method: :change_players },
+        { id: { player_1: :AI, player_2: :HUMAN }, label: 'ai_vs_player', method: :change_players },
+        { id: { player_1: :AI, player_2: :AI }, label: 'ai_vs_ai', method: :change_players },
       ]
     }.freeze
 
@@ -40,6 +51,17 @@ module Game
     end
 
     private
+
+    def open_players_menu(_id)
+      menu = Menu.new(menu: PLAYERS, settings: @settings, previous: self)
+      menu.open
+    end
+
+    def change_players(config)
+      @settings[:type_player_1] = config[:player_1]
+      @settings[:type_player_2] = config[:player_2]
+      @previous.open
+    end
 
     def open_ia_menu(_id)
       menu = Menu.new(menu: AI, settings: @settings, previous: self)

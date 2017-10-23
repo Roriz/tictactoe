@@ -12,11 +12,17 @@ en:
     impossible: Impossible
     troll: Troll
   menu: 
+    players_label: What player settings would you like?
     main_label: What would you like to do?
     start_game: Start game
     config_ia: Change AI configuration
+    config_players: Change Players configuration
     ia_label: 'Select difficulty:'
   errors:
     valid_option: 'Please enter a valid option'
     valid_number: 'Please enter a valid number'
     number_uniq: 'Please enter a number not yet used'
+  players_vs_player: 'Player vs Player'
+  players_vs_ai: 'Player vs AI'
+  ai_vs_player: 'AI vs Player'
+  ai_vs_ai: 'AI vs AI'

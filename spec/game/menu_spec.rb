@@ -105,6 +105,49 @@ RSpec.describe Game::Menu, '#Game::Menu' do
     end
   end
 
+  describe '#open_ia_menu' do
+    it 'should open new Menu current settings, menu and request option' do
+      menu = Game::Menu.new(
+        menu: MOCKED_MENU,
+        settings: DEFAULT_SETTINGS
+      )
+
+      expect(menu).to receive(:system).with('clear')
+      expect(menu).to receive(:settings_render)
+      expect(menu).to receive(:print_options)
+      expect(menu).to receive(:request_option).and_return(id: 'mocked_id', method: :open_players_menu)
+
+      menu_stubed = double(open: DEFAULT_SETTINGS)
+
+      expect(Game::Menu).to receive(:new)
+        .with(menu: Game::Menu::PLAYERS, settings: DEFAULT_SETTINGS, previous: menu)
+        .and_return(menu_stubed)
+
+      menu.open
+    end
+  end
+
+  describe '#change_type_of_ai' do
+    it 'should change settings :type_of_ai to id selected' do
+      settings = DEFAULT_SETTINGS.dup
+      menu = Game::Menu.new(
+        menu: MOCKED_MENU,
+        settings: settings,
+        previous: double(open: true)
+      )
+
+      expect(menu).to receive(:system).with('clear')
+      expect(menu).to receive(:settings_render)
+      expect(menu).to receive(:print_options)
+      expect(menu).to receive(:request_option).and_return(id: { player_1: :MOCKED_1, player_2: :MOCKED_2 }, method: :change_players)
+
+      menu.open
+
+      expect(settings[:type_player_1]).to eq(:MOCKED_1)
+      expect(settings[:type_player_2]).to eq(:MOCKED_2)
+    end
+  end
+
   describe '#settings_render' do
     it 'should print all settings' do
       menu = Game::Menu.new(
