@@ -1,5 +1,6 @@
 # Sobre o repositório
-Esse respositório tem como objetivo criar um jogo da velha em ruby com interface via terminal.
+Esse respositório tem como objetivo recriar um jogo da velha em ruby com interface via terminal.
+O repositório foi baseado em um código legado não versionado, localizado em: `legacy/tictactoe.rb`
 
 # Instalação (Soon)
 Run `bin/setup`
